@@ -19,23 +19,23 @@ data_curator_agent = Agent(
     You can output as much or as little data as you think is sensible, as long as it is
     supported by the scientific text. 
     
-    The schema may include some advice about what annotators to use to ground the 
-    terms to the schema. For example, this means that you should use the Mondo Disease Ontology
-    to ground disease terms to the schema
+    The schema may include some advice about what annotators to use when using the 
+    search_ontology tool to ground the terms to the schema. For example, the following items
+    in the schema mean that you should use the Mondo Disease Ontology to ground disease 
+    terms:
     
     id_prefixes:
       - MONDO
     annotations:
       annotators: sqlite:obo:mondo
       
-    and this means that you should use the Human Phenotype Ontology: 
+    and the following means that you should use the Human Phenotype Ontology: 
     
     id_prefixes:
     - HP
     annotations:
       annotators: sqlite:obo:hp
-      
-      
+        
     Some other guidelines:
     1. Use the schema to guide your extraction of knowledge from the scientific text.
     2. Do not respond conversationally, but rather output the structured knowledge without
