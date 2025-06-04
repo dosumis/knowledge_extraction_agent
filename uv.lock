@@ -7,21 +7,6 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "agent-tutorial"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "oaklib" },
-    { name = "pydantic-ai" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "oaklib", specifier = ">=0.6.22" },
-    { name = "pydantic-ai", specifier = ">=0.2.12" },
-]
-
-[[package]]
 name = "airium"
 version = "0.2.6"
 source = { registry = "https://pypi.org/simple" }
@@ -529,6 +514,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/57/82/b6b16a8d92ef376337e0ecf8e3cbec21cffd777aedb3831e688383aa9fad/funowl-0.2.3.tar.gz", hash = "sha256:eecc2f58d792c714f6671a826cb2744e80cd3019fa56b3c8539ce69c8d874126", size = 5357226, upload-time = "2023-08-08T17:38:17.448Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/36/93/f7d93f394eaa5f96d8249fb582034dfb5a7d1eb4007ad4a1cc65c2e17463/funowl-0.2.3-py3-none-any.whl", hash = "sha256:4c4328d03c7815cd61d6691f0fafc78dc9a78ec3dcab4c83afb64d125ad3660e", size = 51376, upload-time = "2023-08-08T17:38:14.735Z" },
+]
+
+[[package]]
+name = "general-ontology-agent"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "oaklib" },
+    { name = "pydantic-ai" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "oaklib", specifier = ">=0.6.22" },
+    { name = "pydantic-ai", specifier = ">=0.2.12" },
 ]
 
 [[package]]
