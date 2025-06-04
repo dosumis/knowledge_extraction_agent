@@ -48,7 +48,6 @@ def create_data_curator_agent():
         any additional commentary.
         """,
         tools=[search_ontology]
-        # Register the search_ontology tool for use in the agent
     )
 
 
@@ -68,7 +67,7 @@ def extract(text: str, template: Path):
 @click.command()
 @click.option("--agent", default="extract",
               help="Specify the agent to use (e.g., extract, make_schema)")
-@click.argument("text", default="This is a statement about diabetes", type=str)
+@click.argument("text", default="This is a statement about diabetes and Marfan syndrome", type=str)
 @click.argument("template",
                 default="src/general_ontology_agent/linkml_templates/mondo_simple.yaml",
                 type=Path)
@@ -87,8 +86,7 @@ def main(agent: str, text: str, template: Path):
         click.echo(f"Unknown agent: {agent}. Please choose from: extract, make_schema")
 
 
-@oak_agent.tool_plain
-async def search_ontology(term: str, ontology: str, n: int) -> List[Tuple[str, str]]:
+async def search_ontology(term: str, ontology: str, n: int, verbose: bool = False) -> List[Tuple[str, str]]:
     """
     Search an OBO ontology for a term.
 
@@ -110,8 +108,9 @@ async def search_ontology(term: str, ontology: str, n: int) -> List[Tuple[str, s
     adapter = get_adapter("ols:" + ontology)
     results = adapter.basic_search(term)
     labels = list(adapter.labels(results))
-    print(f"## TOOL USE: Searched for '{term}' in '{ontology}' ontology")
-    print(f"## RESULTS: {labels}")
+    if verbose:
+        print(f"## TOOL USE: Searched for '{term}' in '{ontology}' ontology")
+        print(f"## RESULTS: {labels}")
     return labels
 
 
