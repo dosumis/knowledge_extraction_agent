@@ -3,7 +3,6 @@ from pathlib import Path
 from pydantic_ai import Agent
 from typing import List, Tuple
 from oaklib import get_adapter
-from oak_agent_GENERAL import search_ontology
 
 
 # Define different agents
@@ -86,6 +85,34 @@ def main(agent: str, text: str, template: Path):
         extract(text, template)
     else:
         click.echo(f"Unknown agent: {agent}. Please choose from: extract, make_schema")
+
+
+@oak_agent.tool_plain
+async def search_ontology(term: str, ontology: str, n: int) -> List[Tuple[str, str]]:
+    """
+    Search an OBO ontology for a term.
+
+    Note that search should take into account synonyms, but synonyms may be incomplete,
+    so if you cannot find a concept of interest, try searching using related or synonymous
+    terms.
+
+    If you are searching for a composite term, try searching on the sub-terms to get a sense
+    of the terminology used in the ontology.
+
+    Args:
+        term: The term to search for.
+        ontology: The ontology ID to search
+        n: The number of results to return.
+
+    Returns:
+        A list of tuples, each containing an ontology ID and a label.
+    """
+    adapter = get_adapter("ols:" + ontology)
+    results = adapter.basic_search(term)
+    labels = list(adapter.labels(results))
+    print(f"## TOOL USE: Searched for '{term}' in '{ontology}' ontology")
+    print(f"## RESULTS: {labels}")
+    return labels
 
 
 if __name__ == "__main__":
