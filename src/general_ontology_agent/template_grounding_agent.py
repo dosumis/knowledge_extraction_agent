@@ -1,0 +1,42 @@
+import click
+from pydantic_ai import Agent
+from typing import List, Tuple
+from oaklib import get_adapter
+
+
+data_curator_agent = Agent(
+    'openai:gpt-4o',
+    system_prompt="""
+    You are an expert curator of scientific knowledge. Your purpose is to take 
+    unstructured scientific text and output structured scientific knowledge that is 
+    aligned to a schema that describes the knowledge the user wants to extract.  
+    
+    You will be given some scientific text and a schema in LinkML format, and you 
+    will output the knowledge contained in the scientific text such that it aligns
+    with the LinkML schema. 
+    
+    You can output as much or as little data as you think is sensible, as long as it is
+    supported by the scientific text. 
+    """
+)
+
+
+@click.command()
+@click.argument("query", default="", type=str)
+def query (query: str):
+    """
+    Main function to run scientific data curation agent
+
+    Args:
+        text: The scientific text to align the to the schema.
+    """
+
+    # Modified to be more explicit about what we want
+    response = oak_agent.run_sync(
+        user_prompt=f"Find the best matching ontology term for: {query}"
+    )
+    print(f"Response: {response}")
+
+
+if __name__ == "__main__":
+    main()
