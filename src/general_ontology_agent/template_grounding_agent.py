@@ -19,6 +19,10 @@ data_curator_agent = Agent(
     You can output as much or as little data as you think is sensible, as long as it is
     supported by the scientific text. 
     
+    The LinkML schema describes the knowledge that the user wants to extract. Pay particular
+    attention to entity types and relationships defined in the schema. These describe
+    the types of things the user is interested in, and relationships between them.
+    
     The schema may include some advice about what annotators to use when using the 
     search_ontology tool to ground the terms to the schema. For example, the following items
     in the schema mean that you should use the Mondo Disease Ontology to ground disease 
