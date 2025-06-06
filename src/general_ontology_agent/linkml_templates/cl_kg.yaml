@@ -1,0 +1,243 @@
+id: http://w3id.org/ontogpt/cl_kg
+name: cl_kg
+title: Cell Type Knowledge Graph Template
+description: >-
+  A template for extracting cell type knowledge graphs with links to diseases,
+  phenotypes, traits, anatomical locations, and molecular markers
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  BFO: http://purl.obolibrary.org/obo/BFO_
+  CL: http://purl.obolibrary.org/obo/CL_
+  GO: http://purl.obolibrary.org/obo/GO_
+  HGNC: http://identifiers.org/hgnc/
+  HP: http://purl.obolibrary.org/obo/HP_
+  IAO: http://purl.obolibrary.org/obo/IAO_
+  MONDO: http://purl.obolibrary.org/obo/MONDO_
+  MP: http://purl.obolibrary.org/obo/MP_
+  NCBIGene: http://purl.obolibrary.org/obo/NCBIGene_
+  OBA: http://purl.obolibrary.org/obo/OBA_
+  RO: http://purl.obolibrary.org/obo/RO_
+  UBERON: http://purl.obolibrary.org/obo/UBERON_
+  cl_kg: http://w3id.org/ontogpt/cl_kg/
+  linkml: https://w3id.org/linkml/
+  skos: http://www.w3.org/2004/02/skos/core#
+
+default_prefix: cl_kg
+default_range: string
+
+imports:
+  - linkml:types
+  - core
+
+classes:
+  CellTypeKnowledgeGraph:
+    description: A knowledge graph capturing relationships between cell types and various biological entities
+    tree_root: true
+    attributes:
+      cell_types:
+        description: Cell types described in the text
+        range: CellTypeNode
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        annotations:
+          prompt: >-
+            semicolon-separated list of cell types mentioned in the text
+
+  CellTypeNode:
+    description: A cell type with its associated biological relationships
+    is_a: NamedEntity
+    attributes:
+      id:
+        identifier: true
+        range: uriorcurie
+        slot_uri: rdf:Resource
+        annotations:
+          prompt.skip: true
+
+      label:
+        range: string
+        description: the name of the cell type
+        slot_uri: rdfs:label
+        annotations:
+          owl: AnnotationAssertion
+
+      equivalent_to:
+        description: the cell type from the Cell Ontology (CL)
+        range: CellOntologyTerm
+        annotations:
+          prompt: the specific cell type described in the text
+          owl: AnnotationAssertion
+        slot_uri: skos:exactMatch
+
+      definition:
+        annotations:
+          prompt: >-
+            A description of the cell type, its structure (components, morphology), function (processes in participates in, location, markers and its relationships to disease, phenotype.
+          owl: AnnotationProperty, AnnotationAssertion
+        slot_uri: IAO:0000115
+
+      part_of:
+        description: anatomical structures that contain this cell type
+        annotations:
+          prompt: semicolon-separated list of anatomical structures where this cell type is found
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: BFO:0000050
+        multivalued: true
+        range: AnatomicalEntity
+
+      expresses:
+        description: genes expressed by this cell type as molecular markers
+        annotations:
+          prompt: semicolon-separated list of genes that are expressed in or characteristic of this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: RO:0002292
+        multivalued: true
+        range: Gene
+
+      associated_with_disease:
+        description: diseases associated with dysfunction or involvement of this cell type
+        annotations:
+          prompt: semicolon-separated list of diseases where this cell type plays a role
+          owl.template: |
+            {% for disease in associated_with_disease %}
+            SubClassOf( {{ tr(disease) }} ObjectSomeValuesFrom( RO:0004026 {{ id }} ))
+            {% endfor %}
+        multivalued: true
+        range: Disease
+
+      exhibits_phenotype:
+        description: phenotypes exhibited when this cell type is affected
+        annotations:
+          prompt: semicolon-separated list of phenotypes associated with this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: RO:0002200
+        multivalued: true
+        range: Phenotype
+
+      has_trait:
+        description: traits or characteristics of this cell type
+        annotations:
+          prompt: semicolon-separated list of biological traits characteristic of this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: RO:0000086
+        multivalued: true
+        range: Trait
+
+      participates_in:
+        description: biological processes this cell type participates in
+        annotations:
+          prompt: semicolon-separated list of biological processes involving this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: RO:0000056
+        multivalued: true
+        range: BiologicalProcess
+
+      develops_from:
+        description: precursor cell types from which this cell type develops
+        annotations:
+          prompt: semicolon-separated list of cell types that give rise to this cell type during development
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: RO:0002202
+        multivalued: true
+        range: CellOntologyTerm
+
+      develops_into:
+        description: cell types that develop from this cell type
+        annotations:
+          prompt: semicolon-separated list of cell types that differentiate from this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: RO:0002203
+        multivalued: true
+        range: CellOntologyTerm
+
+      has_cellular_component:
+        description: cellular components present in this cell type
+        annotations:
+          prompt: semicolon-separated list of cellular components, organelles, or subcellular structures found in this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: BFO:0000051
+        multivalued: true
+        range: CellularComponent
+
+      has_processes_occurring_in:
+        description: biological processes that occur within this cell type
+        annotations:
+          prompt: semicolon-separated list of biological processes that take place within or are carried out by this cell type
+          owl: SubClassOf, ObjectSomeValuesFrom
+        slot_uri: BFO:0000066
+        multivalued: true
+        range: BiologicalProcess
+
+  CellOntologyTerm:
+    is_a: NamedEntity
+    id_prefixes:
+      - CL
+    annotations:
+      annotators: sqlite:obo:cl
+
+  Gene:
+    is_a: NamedEntity
+    id_prefixes:
+      - HGNC
+      - NCBIGene
+    annotations:
+      annotators: sqlite:obo:hgnc, sqlite:obo:ncbigene
+
+  Disease:
+    is_a: NamedEntity
+    id_prefixes:
+      - MONDO
+    annotations:
+      annotators: sqlite:obo:mondo
+
+  Phenotype:
+    is_a: NamedEntity
+    id_prefixes:
+      - HP
+      - MP
+    annotations:
+      annotators: sqlite:obo:hp, sqlite:obo:mp
+      prompt: >-
+        phenotypic abnormalities or characteristics, including human phenotypes (HP) and 
+        mammalian phenotypes (MP)
+
+  Trait:
+    is_a: NamedEntity
+    id_prefixes:
+      - OBA
+      - GO
+    annotations:
+      annotators: sqlite:obo:oba, sqlite:obo:go
+      prompt: >-
+        biological traits or characteristics, including organism attributes and properties
+
+  AnatomicalEntity:
+    is_a: NamedEntity
+    id_prefixes:
+      - UBERON
+    annotations:
+      annotators: sqlite:obo:uberon
+      prompt: >-
+        anatomical structures, organs, tissues, or body parts
+
+
+  BiologicalProcess:
+    is_a: NamedEntity
+    id_prefixes:
+      - GO
+    annotations:
+      annotators: sqlite:obo:go
+      prompt: >-
+        biological processes or molecular functions
+
+  CellularComponent:
+    is_a: NamedEntity
+    id_prefixes:
+      - GO
+    annotations:
+      annotators: sqlite:obo:go
+      prompt: >-
+        cellular components, organelles, or subcellular structures

@@ -1,0 +1,63 @@
+CellTypeKnowledgeGraph:
+  cell_types:
+    - id: CL:0000695
+      label: Cajal-Retzius cell
+      equivalent_to: CL:0000695
+      definition: >-
+        Cajal-Retzius (CR) cells are a heterogeneous population of morphologically and 
+        molecularly distinct reelin-producing neurons that play crucial roles in brain 
+        development. These small, non-GABAergic neurons are located in the marginal zone/layer
+        I of the developing cerebral cortex and immature hippocampus, where they display 
+        characteristic horizontal orientations with processes parallel to the pial surface.
+        Structurally, CR cells exhibit diverse morphologies including unipolar, bipolar, and 
+        stellate configurations, with horizontal axonal processes and ascending dendrites 
+        that can contact the pial surface. Functionally, these first-born cortical neurons
+        secrete reelin, a glycoprotein essential for controlling dendritogenesis, neuronal 
+        migration, and cortical lamination during embryonic development. They also regulate 
+        the radial glial phenotype and provide critical signals for cortical circuit formation.
+        Abnormalities in Cajal-Retzius cell structure, function, and development are implicated
+        in numerous neurodevelopmental disorders and neurological phenotypes. CR cell 
+        dysfunction has been associated with major psychiatric and developmental conditions 
+        including schizophrenia, bipolar disorder, autism spectrum disorders, lissencephaly, 
+        and temporal lobe epilepsy.
+      part_of:
+        - id: UBERON:0001950
+          label: Neocortex
+        - id: UBERON:0002421
+          label: Hippocampal formation
+      expresses:
+        - id: HGNC:17416
+          label: reelin
+        - id: HGNC:1097
+          label: p73
+        - id: HGNC:15013
+          label: calretinin 
+      associated_with_disease:
+        - id: MONDO:0005090
+          label: schizophrenia
+        - id: MONDO:0004985
+          label: bipolar disorder
+        - id: MONDO:0005258
+          label: autism spectrum disorders
+        - id: MONDO:0018838
+          label: lissencephaly
+        - id: MONDO:0005115
+          label: temporal lobe epilepsy
+      participates_in:
+        - id: GO:0021766
+          label: hippocampus development
+        - id: GO:0001764
+          label: neuron migration
+        - id: GO:0021812
+          label: neuronal-glial interaction involved in cerebral cortex radial glia guided migration
+        - id: GO:0021987
+          label: cerebral cortex development
+      has_trait:
+        - id: UBERON:0005390
+          label: cortical layer I
+      exhibits_phenotype:
+        - id: HP:0034221
+          label: Abnormal temporal lobe morphology
+``` 
+
+This YAML document provides the knowledge graph alignment for Cajal-Retzius cells (CR cells) based on the supplied schema and text.'
